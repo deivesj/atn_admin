@@ -1,0 +1,50 @@
+# sudoers file.
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# See the sudoers man page for the details on how to write a sudoers file.
+#
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# Defaults specification
+# Defaults syslog=auth
+
+# Runas alias specification
+
+# User privilege specification
+root	ALL=(ALL) ALL
+
+# Uncomment to allow people in group wheel to run all commands
+#%wheel	ALL=(ALL)	ALL
+
+# Same thing without a password
+%wheel	ALL=(ALL)	NOPASSWD: ALL
+# %users  ALL=/sbin/mount /cdrom,/sbin/umount /cdrom
+# %users  localhost=/sbin/shutdown -h now
+apache ALL=(ALL) NOPASSWD: /usr/sbin/squid
+apache ALL=(ALL) NOPASSWD: /usr/bin/htpasswd
+apache ALL=(ALL) NOPASSWD: /etc/init.d/squid
+apache ALL=(ALL) NOPASSWD: /usr/bin/reinicia_servico
+apache ALL=(ALL) NOPASSWD: /usr/bin/limpeza
+apache ALL=(ALL) NOPASSWD: /usr/bin/nmap
+apache ALL=(ALL) NOPASSWD: /etc/init.d/dhcpd
+apache ALL=(ALL) NOPASSWD: /bin/netstat
+apache ALL=(ALL) NOPASSWD: /usr/bin/servicos
+apache ALL=(ALL) NOPASSWD: /var/log/messages
+apache ALL=(ALL) NOPASSWD: /var/firewall/firewall.log
+apache ALL=(ALL) NOPASSWD: /sbin/halt
+apache ALL=(ALL) NOPASSWD: /sbin/reboot
+apache ALL=(ALL) NOPASSWD: /var/www/cgi-bin/chetcpasswd.cgi
+apache ALL=(ALL) NOPASSWD: /var/www/cgi-bin/chpasswd.cgi
+apache ALL=(ALL) NOPASSWD: /var/www/cgi-bin/changepassword.cgi
+apache ALL=(ALL) NOPASSWD: /usr/bin/smbpasswd
+apache ALL=(ALL) NOPASSWD: /bin/cp
+apache ALL=(ALL) NOPASSWD: /usr/bin/squida
+apache ALL=(ALL) NOPASSWD: /usr/bin/squidf
+
+ 

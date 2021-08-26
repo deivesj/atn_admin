@@ -1,0 +1,75 @@
+--- CONFS
+Há uma pasta "confs" onde se encontram arquivos modelos já devidamente configurados para a maioria das situações, renomeie o arquivo index.php1 para index.php (este arquivo que nega acesso deve ser usado na raiz html caso não haja página padrão).
+Se optar por substituir o sudoers use "chmod 0444 /etc/sudoers" e "chown root:root /etc/sudoers".
+Dar permissão rw rw rw 666 (chmod 666 /etc/dhcpd.conf)para o arquivo /etc/dhcpd.conf.
+
+--- SCRIPTS
+dar permissao a+x para 
+squid/script/limpa-squid, reinicia_servico, service, squida e squidf
+manut/script/limpaiptables, limpa-log.sh e limpa-logback.sh
+status_services/servicos
+criar link para /usr/bin/ destes arquivos
+
+--- CONFIGURACOES
+Edite todos os arquivos config.inc.php setando os parmetros de acordo com o sistema.
+use chown -R apache atn-admin e chmod 777 -R atn-admin
+
+--- SUDOERS
+Comente a linha que desabilita o requiretty: 
+# Defaults requiretty
+
+Adicione as seguintes linhas, verifique com que usuário o Apache está rodando: 
+# ps -aux | grep httpd 
+
+Opção 01
+##ATN-ADMIN
+apache	ALL=(ALL)	NOPASSWD: ALL
+
+OPção 02
+# sintaxe padrão
+# usuario computador = NOPASSWD: comando
+# apache ALL = NOPASSWD: /bin/halt
+# Indico que o usuario apache executa o comando /bin/halt sem senha "NOPASSWD" de qualquer
+computador "ALL"
+
+#Para efetuar o desligamento/reiniciar
+apache ALL=(ALL) NOPASSWD: /sbin/halt
+apache ALL=(ALL) NOPASSWD: /sbin/reboot
+
+#Para fazer a leitura dos logs -- Esta parte não é importante, só se você deseja fazer a leitura dos logs, certifique-se do caminho, e se você configurou a saída dos logs do iptables para um arquivo separado.
+apache ALL=(ALL) NOPASSWD: /var/log/messages
+apache ALL=(ALL) NOPASSWD: /var/log/shorewall-init.log
+
+#Para fazer a leitura dos serviços
+apache ALL=(ALL) NOPASSWD: /bin/netstat
+apache ALL=(ALL) NOPASSWD: /usr/bin/servicos
+
+#Nmap mais serviço do dhcp
+apache ALL=(ALL) NOPASSWD: /usr/bin/nmap
+apache ALL=(ALL) NOPASSWD: /etc/init.d/dhcpd
+
+#Squid
+apache ALL=(ALL) NOPASSWD: /usr/sbin/squid
+apache ALL=(ALL) NOPASSWD: /usr/bin/htpasswd
+apache ALL=(ALL) NOPASSWD: /etc/init.d/squid
+apache ALL=(ALL) NOPASSWD: /usr/bin/reinicia_servico
+apache ALL=(ALL) NOPASSWD: /usr/bin/limpeza
+apache ALL=(ALL) NOPASSWD: /bin/cp
+apache ALL=(ALL) NOPASSWD: /usr/bin/squida
+apache ALL=(ALL) NOPASSWD: /usr/bin/squidf
+apache ALL=(ALL) NOPASSWD: /bin/mv
+
+#Outros
+apache ALL=(ALL) NOPASSWD: /usr/bin/limpa-log.sh
+apache ALL=(ALL) NOPASSWD: /usr/bin/limpa-squid
+apache ALL=(ALL) NOPASSWD: /usr/bin/limpaiptables
+apache ALL=(ALL) NOPASSWD: /etc/init.d/shorewall
+apache ALL=(ALL) NOPASSWD: /etc/init.d/iptables restart
+apache ALL=(ALL) NOPASSWD: /etc/init.d/smb restart
+apache ALL=(ALL) NOPASSWD: /sbin/iptables
+apache ALL=(ALL) NOPASSWD: /sbin/shorewall
+apache ALL=(ALL) NOPASSWD: /usr/sbin/smbd
+
+
+ou ALL = NOPASSWD: /
+

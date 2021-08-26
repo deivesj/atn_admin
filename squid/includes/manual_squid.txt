@@ -1,0 +1,43 @@
+>>>>>>>>------ USUÁRIOS -------
+-Alterar senha de usuario, altera senha de qualquer usuario de qualquer grupo.
+-Usuários liberados, usuários informan user e senha e têm acesso irrestrito (salvo sites bloqueados).
+-Usuários liberados por IP, usuários informan user e senha e têm acesso irrestrito (salvo sites bloqueados e sites bloqueados nivel1) desde que no computador cujo ip está vinculado ao usuário, ou seja, em outro pc que não seja o seu esse usuário não tem acesso.
+-Nivel1, usuário informa user e senha e tem acesso aos sites dos niveis 1,2 e 3 além dos sites liberados.
+-Nivel2, usuário informa user e senha e tem acesso aos sites dos niveis 2 e 3 além dos sites liberados.
+-Nivel3, usuário informa user e senha e tem acesso aos sites do nivel3 além dos sites liberados.
+_______________________________________________________________________________________________
+-Ips liberados, computadores com ips liberados navegam sem solicitar user e senha sem restrições (salvo sites bloqueados).
+-Ips liberados por usuario, ips dos computadores dos usuarios liberados por ip.
+-Ips bloqueados, computadores com ips bloqueados não solicitam user e senha e não navegam.
+	Ao adicionar use o formato "ip #usuario", ex.: 10.0.0.1 #vitor
+_______________________________________________________________________________________________
+
+>>>>>>>>------ SITES --------
+
+-Sites bloqueados, sites que não são acessados por qualquer dispositivo conectado à esta rede.
+-Sites bloqueados Nivel1, sites que não são acessados por qualquer dispositivo e ou usuaário (salvo usuários e ips liberados).
+	Ao adicionar siga esta orientação:
+	Ex.: www.bhtrans.pbh.gov.br/portal/page/portal/portalpublico
+	bhtrans.pbh.gov.br/portal/page/portal/portalpublico, para que o usuário não acesse apenas o portalpublico	
+	bhtrans.pbh.gov.br, para que o usuário não acesse todo o site	
+	Observe que em ambos os casos omitimos o www.			
+________________________________________________________________________________________________
+-Sites liberados, todos os usuários em todos os grupos acessam sem necessariamente informar user e senha.
+-Sites Nivel1, Todos os usuários do grupo nivel1 e acima acessam.
+-Sites Nivel2, Todos os usuários do grupo nivel2 e acima acessam.
+-Sites Nivel3, Todos os usuários do grupo nivel3 e acima acessam.
+	Ao adicionar siga esta orientação:
+	Ex.: www.bhtrans.pbh.gov.br/portal/page/portal/portalpublico
+	bhtrans.pbh.gov.br/portal/page/portal/portalpublico, para que o usuário acesse apenas o portalpublico	
+	bhtrans.pbh.gov.br, para que o usuário acesse todo o site	
+	Observe que em ambos os casos omitimos o www.	
+_______________________________________________________________________________________________
+-Sites sem Proxy, sites (geralmente sites seguros, https) que não devem passar pelo proxy.
+	Ao adicionar siga esta orientação:
+	Ex.: internetbanking.caixa.gov.br/SIIBC/index.processa
+	crie uma regra contendo internetbanking.caixa.gov.br* e salve	
+	crie outra regra desta vez contendo internetbanking.caixa.gov.br:443*	
+	Observe que em ambos os casos inserimos o asterisco.		
+_______________________________________________________________________________________________
+
+

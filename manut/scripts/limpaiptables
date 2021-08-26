@@ -1,0 +1,23 @@
+echo -n "Limpando regras..."
+iptables -F
+iptables -F -t nat
+iptables -X
+iptables -X -t nat
+iptables -Z
+iptables -Z -t nat
+iptables -F INPUT
+iptables -F OUTPUT
+iptables -F FORWARD
+iptables -t nat -F
+echo "ok!"
+echo -n "reativando serviços..."
+/etc/init.d/network restart
+/etc/init.d/iptables restart
+/etc/init.d/shorewall restart
+/etc/init.d/smb restart
+#/etc/init.d/vmware restart
+squid -k reconfigure
+rinetd
+echo "ok!"
+
+#/opt/scripts/./sabemi

@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo /bin/\cp /etc/sysctl.confF /etc/sysctl.conf
+sudo /usr/sbin/sysctl -w net.ipv4.ip_forward=0

@@ -1,0 +1,121 @@
+-->>Para criar o database
+Criando um Novo Usuário e Concedendo Permissões no MySQL
+CREATE USER 'atnw'@'localhost' IDENTIFIED BY 'atndvc18';
+GRANT ALL PRIVILEGES ON * . * TO 'atnw'@'localhost';
+FLUSH PRIVILEGES;
+#mysql -u atnw -p
+(senha atndvc18)
+
+create database atn; 
+
+Agora vamos selecionar a base criada:
+
+use atn;
+
+Criando a tabela:
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `senha` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `usuario` (`usuario`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+Criando o primeiro usuario:
+insert into usuarios values(1,'Atn','atn','atndvc');
+
+Alterando Dados:
+UPDATE usuarios set nome='João da Silva',senha='1313' where id=3;
+Atencão para a id pois é ela que identifica a linha a ser alterada, senão altera todas as linhas.
+
+Deletando Dados:
+DELETE FROM usuarios where id=3;
+Atencão para a id pois é ela que identifica a linha a ser deletada, senão deleta todas as linhas.
+
+Conferindo:
+select * from usuarios;
+
+Apagando uma tabela:
+drop table usuarios;
+
+Criar mais campos (coluna):
+ALTER TABLE usuarios ADD email VARCHAR(50);
+______________________________________________________________________________________________
+Resolvendo   ERROR 1045: Access denied for user: ' root@localhost' (Using password: NO) 
+
+Opção 1 
+Em palavras simples a sua sessão de "root" não souber a senha para o usuário root mysql.
+
+Se você quiser fazer mais fácil de acessar o seu mysql
+
+criar .my.cnf em / root /
+
+e colocar nele
+
+[mysqladmin]
+ user = root
+ password = mysqlrootpassword
+[mysql]
+ user = root
+ password = mysqlrootpassword
+[mysqldump]
+ user = root
+ password = mysqlrootpassword
+ 
+onde claro mysqlrootpassword é a sua senha para a senha de root do mysql assim quando você executar mysql ele usa esta palavra-passe
+Lembre-se sobre a segurança deste arquivo - colocar os direitos seguras, de modo que ninguém no seu servidor pode lê-lo!
+
+Opção 2
+Bom, para resolvermos isso, primeiramente temos que alterar a senha de root do MySQL:
+
+1. Pare o MySQL:
+
+# /etc/init.d/mysqld stop
+
+2. Iniciei o MySQL, sem senha:
+
+# mysqld_safe --skip-grant-tables
+
+3. Conecte ao MySQL, usando:
+
+$ mysql client - mysql -u root
+
+4. No prompt do MySQL, execute:
+
+mysql> use mysql;
+mysql> update user set password=PASSWORD("atn18") where User='root';
+mysql> flush privileges;
+mysql> quit;
+
+5. Pare novamente o MySQL:
+
+# /etc/init.d/mysql stop
+
+6. Iniciei novamente o MySQL:
+
+# /etc/init.d/mysql start
+
+7. Faça o teste:
+
+$ mysql -u root -p
+
+Bom, fazendo estes procedimentos, sua nova senha de root para o banco de dados estará configurada.
+
+Mas, se tentar acessar sem senha, acontecerá o mesmo erro:
+
+    ERROR 1045: Access denied for user: ' root@localhost' (Using password: NO) 
+
+
+Resolução definitiva do erro
+1. Entre novamente com no MySQL com a senha que setamos anteriormente:
+
+$ mysql -u root -p
+
+2. Execute o comando abaixo:
+
+mysql> set password for atn@localhost=atndvc18('');
+
+3. Tente entrar sem a senha no banco de dados, digite:
+
+$ mysql

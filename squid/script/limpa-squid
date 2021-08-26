@@ -1,0 +1,132 @@
+#!/bin/bash
+
+# Altere as 3 primeiras variáveis com seu editor favorito e 
+# com o caminho do Squid e do squid.conf
+
+EDITOR=nano
+SQUID=/usr/sbin/squid
+CONF=/etc/squid/squid.conf
+
+BKPLOG=/root/dir_clean
+LOGSTART=$BKPLOG/msg-squid.txt
+
+HOJE=$(date +%d_%m_%Y)
+DIRCACHE=$(grep ^cache_dir $CONF | cut -f3 -d' ')
+ARQCACHE=$(grep ^cache_log $CONF | cut -f2- -d' ')
+ARQSTORE=$(grep ^cache_store_log $CONF | cut -f2- -d' ')
+ARQSWAP=$(grep ^cache_swap_log $CONF | cut -f2- -d' ')
+ARQACCESS=$(grep ^cache_access_log $CONF | cut -f2- -d' ')
+PID=$(grep 'pid_filename /' $CONF | cut -f3- -de | cut -c2-)
+
+ 
+echo
+echo "Esta função irá fazer uma limpeza do cache e dos arquivos de log,"
+echo "utilize-a se o Squid estiver travando com muita freqüência..." 
+echo "--> Deseja continuar? --> s / n"
+
+#read s_n
+#if [ $s_n = s ]; then
+echo 
+echo "Forçando a parada do Squid, aguarde..."
+killall -9 squid
+sleep 3
+echo
+
+    echo "Forçando a remoção do PID do Squid..."
+    if [ -e $PID ]; then
+    rm -f $PID
+    else
+    echo "O PID já tinha sido removido... Não requer nenhuma ação."
+    fi
+    echo
+    
+echo
+#echo "Nossa próxima etapa será 'detonar' os arquivos de log do Squid"
+#echo "Para fins de (possível) auditoria, irei salvar uma cópia de segurança do access.log"
+#    if [ ! -d $BKPLOG ]; then
+#    echo
+#    echo "Vou criar o diretório $BKPLOG para colocar um back-up do access.log"
+#    mkdir $BKPLOG
+#    else
+#    echo
+#    echo "Aproveitando seu diretório $BKPLOG..."
+#    fi
+#echo
+#echo "Salvando cópia de segurança do seu access.log em $BKPLOG..."
+#echo "Dependendo do tamanho... isto pode demorar um pouco..."
+#cp -f $ARQACCESS $BKPLOG/$HOJE\_access.log
+#echo
+sleep 3
+echo "LIMPANDO os arquivos de log..."
+
+cat /dev/null > $ARQCACHE
+cat /dev/null > $ARQACCESS
+cat /dev/null > $ARQSTORE
+cat /dev/null > $ARQSWAP
+echo 
+
+sleep 3
+echo "Removendo os diretórios de cache."
+rm -rf $DIRCACHE/*
+echo
+echo "REcriando os diretórios de cache..."
+sleep 3
+echo
+$SQUID -z
+sleep 5
+echo "Reiniciando o Squid..."
+$SQUID
+echo 
+echo "Aguarde apenas alguns segundos..."
+sleep 5
+echo 
+echo "Mostrando status do Squid (DEVEM aparecer os dois processos básicos"
+echo "do Squid: processo $SQUID e processo (squid):"
+echo
+ps -ax | grep squid
+echo
+sleep 5
+echo "Listando o -PID- do Squid."
+echo "Certifique-se de que o PID corresponde ao número do processo"
+echo "que está com a palavra (squid) entre parêntesis..."
+echo
+#cat $PID
+    echo
+    echo "Após a finalização, verifique no log gerado, os campos 'exited due to signal x'"
+    echo "e identifique as causas de parada com o comando: man signal"
+    echo "--> Deseja ver o log desta reinicialização? --> s (recomendado) / n"
+#    read s_n
+#    if [ $s_n = s ]; then
+#    cat /var/log/messages | grep squid > $LOGSTART
+#    echo >> $LOGSTART
+#    cat $ARQCACHE >> $LOGSTART
+#    echo >> $LOGSTART
+#    echo >> $LOGSTART
+# Texto que será inserido no final dos logs (no arquivo /root/msg_squid.txt)
+#    echo LEIA ISTO: >> $LOGSTART
+#    echo ---------- >> $LOGSTART
+#    echo >> $LOGSTART
+#    echo Se o squid continuar travando após este procedimento faça o seguinte: >> $LOGSTART
+#    echo Aplique o comando: killall -9 squid . Depois reinicie o squid em modo debug, nível 9 >> $LOGSTART
+#    echo aplicando o comando: squid -d 9 . Assim estaremos depurando os logs... >> $LOGSTART
+#    echo Depois abra o arquivo /var/log/squid/cache.log e verifique as mensagens de erro. >> $LOGSTART
+#    echo >> $LOGSTART
+#    echo >> $LOGSTART
+
+# ------------------------------------------------------------------------------
+#    echo
+#    echo "Vou abrir as mensagens desta inicialização."
+#    echo "Abrindo arquivo $LOGSTART"
+#    echo "Veja a NOTA no final do arquivo."
+#    sleep 5
+#    $EDITOR $LOGSTART
+#    else
+#    echo
+#    echo "Saindo sem filtrar arquivo com mensagens da reinicialização do Squid."
+#    fi
+
+#else 
+echo "Sainda sem fazer nada."
+echo "Se você deseja executar este script, utilize a letra s minúscula."
+
+
